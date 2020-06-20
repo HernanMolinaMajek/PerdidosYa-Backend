@@ -8,11 +8,15 @@ lostSchema.statics = {
   },
 
   get: function (query, cb) {
-    this.find(query,cb)
+    this.find(query).populate("_ownerId").populate("_petId").exec(cb);
   },
 
   update: function (query, updatedData, cb) {
     this.findOneAndUpdate(query, updatedData, cb);
+  },
+
+  deleteByPetId: function(query,cb){
+    this.findOneAndDelete(query,cb)
   },
 
   delete: function (query, cb) {

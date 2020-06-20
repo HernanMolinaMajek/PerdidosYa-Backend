@@ -8,7 +8,11 @@ petSchema.statics = {
   },
 
   get: function (query, cb) {
-    this.find(query).populate('_ownerId').exec(cb);
+    this.find(query).populate("_ownerId").exec(cb);
+  },
+
+  updateLostStatus: function (query, status, cb) {
+    this.findOneAndUpdate(query, { $set: status }, { new: true }, cb);
   },
 
   delete: function (query, cb) {
