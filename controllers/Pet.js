@@ -5,8 +5,7 @@ const fs = require("fs");
 const serverPath = "http://localhost:3030/";
 
 exports.createPet = function (req, res, next) {
-  console.log(req.file);
-  console.log(req.body);
+ 
   const pet = {
     _ownerId: req.body._ownerId,
     img: serverPath + req.file.path,
@@ -20,8 +19,8 @@ exports.createPet = function (req, res, next) {
   };
 
   Pet.create(pet, function (err, pet) {
-    if (err) res.json({ error: err });
-    res.json({ message: "Pet created succesfuly", Pet: pet });
+    if (err) return res.json({ error: err });
+    return res.json({ message: "Pet created succesfuly", Pet: pet });
   });
 };
 
@@ -101,11 +100,13 @@ exports.deletePet = function (req, res) {
     if (err) res.json({ error: err });
 
     Lost.deleteByPetId(pet._id);
+    
+    console.log(pet)
 
-    fs.unlink(`./${pet.img}`, (err) => {
-      if (err) throw err;
-      console.log("Photo delete");
-    });
+    // fs.unlink(`./${pet.img.path}`, (err) => {
+    //   if (err) throw err;
+    //   console.log("Photo delete");
+    // });
 
     res.json({ message: "Pet deleted" });
   });
