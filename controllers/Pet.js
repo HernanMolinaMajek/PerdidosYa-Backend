@@ -5,7 +5,6 @@ const fs = require("fs");
 const serverPath = "http://localhost:3030/";
 
 exports.createPet = function (req, res, next) {
- 
   const pet = {
     _ownerId: req.body._ownerId,
     img: serverPath + req.file.path,
@@ -34,7 +33,6 @@ exports.getPets = function (req, res, next) {
 };
 
 exports.getUserPets = function (req, res, next) {
-  
   Pet.get({ _ownerId: req.params.id }, function (err, pets) {
     if (err) {
       res.json({ error: err });
@@ -51,6 +49,22 @@ exports.getUserPets = function (req, res, next) {
 //     res.json({ pet });
 //   });
 // };
+
+exports.updatePet = function (req, res) {
+  const updatedPet = {
+    name: req.body.name,
+    sex: req.body.sex,
+    age: req.body.age,
+    type: req.body.type,
+    breed: req.body.breed,
+    description: req.body.description,
+  };
+
+  Pet.updatePetbyId({ _id: req.params.id }, updatedPet, function (err, pet) {
+    if (err) res.json({ error: err });
+    res.json({ message: "pet updated", Pet: pet });
+  });
+};
 
 exports.getById = function (req, res) {
   Pet.get({ _id: req.params.id }, function (err, pet) {
@@ -100,8 +114,8 @@ exports.deletePet = function (req, res) {
     if (err) res.json({ error: err });
 
     Lost.deleteByPetId(pet._id);
-    
-    console.log(pet)
+
+    console.log(pet);
 
     // fs.unlink(`./${pet.img.path}`, (err) => {
     //   if (err) throw err;

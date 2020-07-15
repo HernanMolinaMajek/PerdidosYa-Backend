@@ -19,6 +19,9 @@ petSchema.statics = {
     this.findOneAndUpdate(query, { $set: status }, { new: true }, cb);
   },
 
+  updatePetbyId: function (query, status, cb) {
+    this.findOneAndUpdate(query, { $set: status }, { new: true }, cb);
+  },
 
   delete: function (query, cb) {
     this.findOneAndDelete(query, cb);
